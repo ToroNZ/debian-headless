@@ -34,9 +34,8 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: ${{ env.LABEL }}-${{ env.ARCH }}-iso
-          path: ${{ env.TARGET }}
       - name: Generate checksum
-        run: ls -laths && ls -laths ${{ env.TARGET }}/ && sha256sum ${{ env.TARGET }} > ${{ env.TARGET }}.sha256
+        run: ls -laths && sha256sum ${{ env.TARGET }} > ${{ env.TARGET }}.sha256
       - name: Split file into 1GB slices
         run: split -b 1G ${{ env.TARGET }} ${{ env.TARGET }}.
       - uses: "marvinpinto/action-automatic-releases@latest"
