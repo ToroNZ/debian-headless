@@ -3,15 +3,16 @@ name: 'Build Debian ISO'
 on:
   workflow_dispatch:
 
+env:
+  SOURCE: debian-12.5.0-amd64-DVD-1.iso
+  TARGET: debian-12.5.0-amd64-unattended.iso
+  ARCH: amd64
+  LABEL: debian
+  TMP: "tempdir"
+
 jobs:
   build-debian-iso:
     runs-on: ubuntu-latest
-    env:
-      SOURCE: debian-12.5.0-amd64-DVD-1.iso
-      TARGET: debian-12.5.0-amd64-unattended.iso
-      ARCH: amd64
-      LABEL: debian
-      TMP: "tempdir"
     steps:
       - uses: actions/checkout@v3
       - name: Install dependencies
@@ -26,3 +27,18 @@ jobs:
           name: ${{ env.LABEL }}-${{ env.ARCH }}-iso
           path: ${{ env.TARGET }}
           overwrite: true
+  release:
+    runs-on: ubuntu-latest
+    needs: build-debian-iso
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.LABEL }}-${{ env.ARCH }}-iso
+          path: ${{ env.TARGET }}
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: true
+          title: "Latest release"
+          files: ${{ env.TARGET }}
