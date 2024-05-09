@@ -38,11 +38,11 @@ jobs:
         run: ls -laths && sha256sum ${{ env.TARGET }} > ${{ env.TARGET }}.sha256
       - name: Split file into 1GB slices
         run: split -b 1G ${{ env.TARGET }} ${{ env.TARGET }}.
-      - uses: "marvinpinto/action-automatic-releases@latest"
+      - uses: "ToroNZ/action-automatic-releases@master"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "latest"
-          prerelease: true
+          prerelease: false
           title: "Latest release"
           files: |
             ${{ env.TARGET }}.*
