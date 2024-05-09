@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SOURCE: debian-12.5.0-amd64-DVD-1.iso
-      TARGET: debian-12.5.0-amd64-unnattended.iso
+      TARGET: debian-12.5.0-amd64-unattended.iso
       ARCH: amd64
       LABEL: debian
     steps:
