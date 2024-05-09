@@ -35,10 +35,15 @@ jobs:
         with:
           name: ${{ env.LABEL }}-${{ env.ARCH }}-iso
           path: ${{ env.TARGET }}
+      - name: Generate checksum
+        run: sha256sum ${{ env.TARGET }} > ${{ env.TARGET }}.sha256
+      - name: Split file into 1GB slices
+        run: split -b 1G ${{ env.TARGET }} ${{ env.TARGET }}.
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "latest"
           prerelease: true
           title: "Latest release"
-          files: ${{ env.TARGET }}
+          files: |
+            ${{ env.TARGET }}.*
