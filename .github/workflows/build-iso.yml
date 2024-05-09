@@ -11,6 +11,7 @@ jobs:
       TARGET: debian-12.5.0-amd64-unattended.iso
       ARCH: amd64
       LABEL: debian
+      TMP: "tempdir"
     steps:
       - uses: actions/checkout@v3
       - name: Install dependencies
